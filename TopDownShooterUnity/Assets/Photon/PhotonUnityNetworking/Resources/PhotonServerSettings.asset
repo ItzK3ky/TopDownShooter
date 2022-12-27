@@ -43,6 +43,7 @@ MonoBehaviour:
   - setAmountOfSpawnedPlayers
   - setRigidBodyVelocityOnPlayerIndex
   - SyncVariable
+  - increaseAmountOfPlayersInRoomByOne
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
