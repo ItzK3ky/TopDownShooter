@@ -46,7 +46,6 @@ public class PhotonPlayerSyncer : MonoBehaviour
         }
         catch
         {
-            Debug.Log("Couldnt make out player of this client");
         }
     }
 
