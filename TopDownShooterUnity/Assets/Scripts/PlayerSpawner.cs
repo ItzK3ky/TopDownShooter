@@ -49,7 +49,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     /// </summary>
     private IEnumerator spawnPlayer()
     {
-        handlePlayersAlreadyInRoom();
+        StartCoroutine(handlePlayersAlreadyInRoom());
 
         yield return new WaitForSecondsRealtime(2f);
 
@@ -150,9 +150,12 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     /// Adds all players, that are already in the room to the list
     /// of GameObjects to be synced, and puts their colliders on isTrigger
     /// </summary>
-    private void handlePlayersAlreadyInRoom()
+    private IEnumerator handlePlayersAlreadyInRoom()
     {
-		GameObject[] arrayOfPlayerGameObjectsInScene = GameObject.FindGameObjectsWithTag("Player");
+        //Wait for game to spawn in other player GameObjects
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        GameObject[] arrayOfPlayerGameObjectsInScene = GameObject.FindGameObjectsWithTag("Player");
 
         foreach (GameObject gameObjectInArray in arrayOfPlayerGameObjectsInScene)
         {

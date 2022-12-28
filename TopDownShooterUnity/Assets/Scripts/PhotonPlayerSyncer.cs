@@ -25,13 +25,13 @@ public class PhotonPlayerSyncer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Send Rigidbody velocity of this client to all other clients
+        #region Send Rigidbody velocity of this client to all other clients
 
-        GameObject playerOfThisClient;
+		GameObject playerOfThisClient;
         Rigidbody2D rigidbodyOfPlayerOfThisClient;
         PlayerController playerControllerOfPlayerOfThisClient;
 
-        //Try statement because could all go wrong because there is no player yet because it waits 2 sec to spawn (SpawnPlayers script)
+        //Try statement because could all go wrong because there is no player yet since it waits 2 sec to spawn (SpawnPlayers script)
         try
         {
             playerOfThisClient = findPlayerObjectOfThisClient();
@@ -48,9 +48,11 @@ public class PhotonPlayerSyncer : MonoBehaviour
         catch
         {
         }
-    }
 
-    private IEnumerator increaseTeleportTresholdIfnecessary(GameObject gameObjectToIncreaseTreshold)
+		#endregion
+	}
+
+	private IEnumerator increaseTeleportTresholdIfnecessary(GameObject gameObjectToIncreaseTreshold)
     {
         PhotonTransformViewClassic photonTransformViewClassicOfGameObject = gameObjectToIncreaseTreshold.GetComponent<PhotonTransformViewClassic>();
         PlayerController gameObjectPlayerController = gameObjectToIncreaseTreshold.GetComponent<PlayerController>();
@@ -88,7 +90,6 @@ public class PhotonPlayerSyncer : MonoBehaviour
     [PunRPC]
     private void setRigidBodyVelocityOnPlayerIndex(Vector2 rigidbodyVelocity, int playerIndexOfRigidbodyVelocity)
     {
-        Debug.Log("Set rigidbody of player with the ID: " + playerIndexOfRigidbodyVelocity);
         playerObjectRigidbodyVelocity[playerIndexOfRigidbodyVelocity] = rigidbodyVelocity;
     }
 

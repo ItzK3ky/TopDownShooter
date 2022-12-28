@@ -431,6 +431,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   photonView: {fileID: 575171058}
+  playerObjectsToSync: []
+  playerObjectRigidbodyVelocity: []
 --- !u!114 &575171058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2161,3 +2163,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7873493254263824740, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
+  mostRecentPlayerToLeave: {fileID: 0}
