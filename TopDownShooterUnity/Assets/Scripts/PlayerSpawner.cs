@@ -49,7 +49,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     /// </summary>
     private IEnumerator spawnPlayer()
     {
-        addAllPlayerAlreadyInLobbyToBeSynced();
+        handlePlayersAlreadyInRoom();
 
         yield return new WaitForSecondsRealtime(2f);
 
@@ -146,21 +146,28 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         mostRecentPlayerToJoin = playerObject;
     }
     
-    private void addAllPlayerAlreadyInLobbyToBeSynced()
+    /// <summary>
+    /// Adds all players, that are already in the room to the list
+    /// of GameObjects to be synced, and puts their colliders on isTrigger
+    /// </summary>
+    private void handlePlayersAlreadyInRoom()
     {
-        GameObject[] arrayOfPlayerGameObjectsInScene = GameObject.FindGameObjectsWithTag("Player");
+		GameObject[] arrayOfPlayerGameObjectsInScene = GameObject.FindGameObjectsWithTag("Player");
 
         foreach (GameObject gameObjectInArray in arrayOfPlayerGameObjectsInScene)
         {
-            //"Only add other players, not this client"
+            //"Only handle other players, not this client"
             if (gameObject.GetPhotonView().IsMine)
                 continue;
 
             photonPlayerSyncer.addPlayerObjectToSync(gameObjectInArray, gameObjectInArray.GetComponent<PlayerController>().playerIndex);
+            gameObjectInArray.GetComponent<Collider2D>().isTrigger = true;
         }
-    }
+	}
 
-    private void setupVirtualCameraToFollowPlayer()
+
+
+	private void setupVirtualCameraToFollowPlayer()
     {
         virtualCamera.Follow = spawnedPlayer.transform;
     }
