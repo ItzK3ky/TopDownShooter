@@ -28,26 +28,26 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         photonView = GetComponent<PhotonView>();
         
         Debug.Log("I joined the room");
-        StartCoroutine(spawnPlayer());
+        StartCoroutine(SpawnPlayer());
     }
 
     public override void OnPlayerEnteredRoom(Player player)
     {
         Debug.Log("Someone joined the room");
-        StartCoroutine(handleJoiningPlayer());
+        StartCoroutine(HandleJoiningPlayer());
     }
     
     public override void OnPlayerLeftRoom(Player Player)
     {
         Debug.Log("Someone left the room");
-        StartCoroutine(handleLeavingPlayer());
+        StartCoroutine(HandleLeavingPlayer());
     }
 
     /// <summary>
     /// Spawns player on on Photon Room (so it's visible for all players)
     /// and  assigns an playerIndex to the player
     /// </summary>
-    private IEnumerator spawnPlayer()
+    private IEnumerator SpawnPlayer()
     {
         StartCoroutine(handlePlayersAlreadyInRoom());
 
@@ -66,7 +66,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     /// <summary>
     /// Assigns playerIndexes to (other) joining players
     /// </summary>
-    private IEnumerator handleJoiningPlayer()
+    private IEnumerator HandleJoiningPlayer()
     {
         Debug.Log("Handling joining player...");
 
@@ -97,7 +97,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     /// <summary>
     /// Shifts down all playerIndexes, if a player leaves
     /// </summary>
-    private IEnumerator handleLeavingPlayer()
+    private IEnumerator HandleLeavingPlayer()
     {
         Debug.Log("Handling leaving player...");
 
