@@ -25,10 +25,11 @@ public class PhotonPlayerSyncer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Set Rigidbody velocity of this client the same on all others too
-        GameObject playerOfThisClient = null;
-        Rigidbody2D rigidbodyOfPlayerOfThisClient = null;
-        PlayerController playerControllerOfPlayerOfThisClient = null;
+        //Send Rigidbody velocity of this client to all other clients
+
+        GameObject playerOfThisClient;
+        Rigidbody2D rigidbodyOfPlayerOfThisClient;
+        PlayerController playerControllerOfPlayerOfThisClient;
 
         //Try statement because could all go wrong because there is no player yet because it waits 2 sec to spawn (SpawnPlayers script)
         try
@@ -47,19 +48,6 @@ public class PhotonPlayerSyncer : MonoBehaviour
         catch
         {
         }
-    }
-
-    private float getGameObjectSpeed(GameObject gameObjectToCalculateSpeed)
-    {
-        PlayerController gameObjectPlayerController = gameObjectToCalculateSpeed.GetComponent<PlayerController>();
-
-        float speed;
-        Vector2 speedVector = playerObjectRigidbodyVelocity[gameObjectPlayerController.playerIndex];
-
-        speed = Mathf.Max(speedVector.x, speedVector.y);
-        if(speed == 0) speed = Mathf.Min(speedVector.x, speedVector.y);
-        
-        return speed;
     }
 
     private IEnumerator increaseTeleportTresholdIfnecessary(GameObject gameObjectToIncreaseTreshold)
@@ -100,6 +88,7 @@ public class PhotonPlayerSyncer : MonoBehaviour
     [PunRPC]
     private void setRigidBodyVelocityOnPlayerIndex(Vector2 rigidbodyVelocity, int playerIndexOfRigidbodyVelocity)
     {
+        Debug.Log("Set rigidbody of player with the ID: " + playerIndexOfRigidbodyVelocity);
         playerObjectRigidbodyVelocity[playerIndexOfRigidbodyVelocity] = rigidbodyVelocity;
     }
 
@@ -107,5 +96,11 @@ public class PhotonPlayerSyncer : MonoBehaviour
     {
         playerObjectsToSync.Insert(playerIndex, playerObjectToAdd);
         playerObjectRigidbodyVelocity.Add(playerObjectToAdd.GetComponent<Rigidbody2D>().velocity);
+    }
+
+    public void removePlayerObjectToSync(int playerIndex)
+    {
+        playerObjectsToSync.RemoveAt(playerIndex);
+        playerObjectRigidbodyVelocity.RemoveAt(playerIndex);
     }
 }

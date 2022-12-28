@@ -109,7 +109,10 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
                 break;
         }
 
-        //Going through each gameObject and downshifting each index if necessary
+        //Removing GameObject from list of Objects to be removed
+        photonPlayerSyncer.removePlayerObjectToSync(mostRecentPlayerToLeave.GetComponent<PlayerController>().playerIndex);
+
+        //Going through each GameObject and downshifting each index if necessary
         foreach (GameObject playerObject in photonPlayerSyncer.playerObjectsToSync)
         {
             PlayerController playerControllerOfPlayerThatLeft = mostRecentPlayerToLeave.GetComponent<PlayerController>();
