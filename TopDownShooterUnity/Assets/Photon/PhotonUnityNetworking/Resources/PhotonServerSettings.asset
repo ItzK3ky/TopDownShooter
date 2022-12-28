@@ -44,6 +44,8 @@ MonoBehaviour:
   - setRigidBodyVelocityOnPlayerIndex
   - SyncVariable
   - increaseAmountOfPlayersInRoomByOne
+  - setMostRecentPlayerToJoin
+  - setMostRecentPlayerToLeave
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

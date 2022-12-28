@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Virtual Camera
   - Photon Player Syncer
+  - Player Spawner
   layers:
   - Default
   - TransparentFX

@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: Keyhan Twellmeyer-Spiegelhauer
   productName: TopDownShooter
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -134,7 +134,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: alpha_000000000046
+  bundleVersion: alpha_000000000055
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
