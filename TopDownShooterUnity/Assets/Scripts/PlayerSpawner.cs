@@ -17,8 +17,6 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     private GameObject spawnedPlayer; //Player, that this script spawns (also player of this client)
 
     private GameObject mostRecentPlayerToJoin;
-    private GameObject alreadyHandledMostRecentPlayerToJoin;
-
     public GameObject mostRecentPlayerToLeave;
 
 
@@ -58,7 +56,8 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
         spawnedPlayer.GetComponent<PlayerController>().playerIndex = PhotonNetwork.PlayerList.Length - 1;
 
-        photonView.RPC("setMostRecentPlayerToJoin", RpcTarget.All, spawnedPlayer.GetPhotonView().ViewID);
+        //Send other clients, already in room, this clients gameobject
+        photonView.RPC("setMostRecentPlayerToJoin", RpcTarget.Others, spawnedPlayer.GetPhotonView().ViewID);
         
         setupVirtualCameraToFollowPlayer();
         addPlayerToBeSynced();
@@ -90,7 +89,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         mostRecentPlayerToJoin.GetComponent<Collider2D>().isTrigger = true;
 
         //Reset mostRecentPlayerToJoin for the next time
-        alreadyHandledMostRecentPlayerToJoin = mostRecentPlayerToJoin;
+        mostRecentPlayerToJoin = null;
 
         Debug.Log("Handled joining Player!. Joined player " + mostRecentPlayerToJoin + " has the ID " + playerControllerOfMostRecentPlayerToJoin.playerIndex);
     }
