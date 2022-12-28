@@ -76,7 +76,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         {
             yield return new WaitForSecondsRealtime(0.2f);
 
-            if (mostRecentPlayerToJoin != alreadyHandledMostRecentPlayerToJoin)
+            if (mostRecentPlayerToJoin != null)
                 break;
         }
 
