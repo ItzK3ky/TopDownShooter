@@ -40,12 +40,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         //This is done, so the PlayerSpawner can manage playerIndexes when players leave
         PlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("Player Spawner").GetComponent<PlayerSpawner>();
-        Debug.Log("Destroyed gameobject, here dibng: " + playerSpawner);
-        playerSpawner.mostRecentPlayerToLeave = gameObject;
+        playerSpawner.indexOfMostRecentPlayerToLeave = playerIndex;
     }
 
     //Find Joystick GameObject in Scene

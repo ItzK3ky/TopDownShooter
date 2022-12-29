@@ -17,7 +17,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     private GameObject spawnedPlayer; //Player, that this script spawns (also player of this client)
 
     private GameObject mostRecentPlayerToJoin;
-    public GameObject mostRecentPlayerToLeave;
+    public int indexOfMostRecentPlayerToLeave = -1; //Is by default -1, because no player is ever gonna have index -1
 
 
     void Start()
@@ -95,7 +95,8 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Shifts down all playerIndexes, if a player leaves
+    /// Shifts down all playerIndexes, when a player leaves, and removes the player
+    /// that left from the list of Objects to be synced (PhotonPlayerSyncer.cs)
     /// </summary>
     private IEnumerator HandleLeavingPlayer()
     {
@@ -104,36 +105,29 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         //Wait for mostRecentPlayer to be set
         while (true)
         {
-            Debug.Log("Wait for mostRecentPlayerToLeave to be set");
             yield return new WaitForSecondsRealtime(0.2f);
-            if (mostRecentPlayerToLeave != null)
+            if (indexOfMostRecentPlayerToLeave != -1)
                 break;
         }
 
-        Debug.Log("mostRecentPlayerToLeave is set: " + mostRecentPlayerToLeave);
-
-        //Removing GameObject from list of Objects to be removed
-        photonPlayerSyncer.removePlayerObjectToSync(mostRecentPlayerToLeave.GetComponent<PlayerController>().playerIndex);
+        //Removing GameObject from list of Objects to be synced
+        photonPlayerSyncer.removePlayerObjectToSync(indexOfMostRecentPlayerToLeave);
 
         //Going through each GameObject and downshifting each index if necessary
         foreach (GameObject playerObject in photonPlayerSyncer.playerObjectsToSync)
         {
-            PlayerController playerControllerOfPlayerThatLeft = mostRecentPlayerToLeave.GetComponent<PlayerController>();
             PlayerController playerControllerOfPlayerObjectInList = playerObject.GetComponent<PlayerController>();
-            if (playerControllerOfPlayerObjectInList.playerIndex > playerControllerOfPlayerThatLeft.playerIndex)
-            {
-                //Remove player that left from PhotonPlayerSyncer
-                photonPlayerSyncer.playerObjectsToSync.RemoveAt(playerControllerOfPlayerThatLeft.playerIndex);
-                photonPlayerSyncer.playerObjectRigidbodyVelocity.RemoveAt(playerControllerOfPlayerThatLeft.playerIndex);
 
+            if (playerControllerOfPlayerObjectInList.playerIndex > indexOfMostRecentPlayerToLeave)
+            {
                 playerControllerOfPlayerObjectInList.playerIndex--;
 
                 Debug.Log(playerObject + " now has the ID " + playerControllerOfPlayerObjectInList.playerIndex);
             }
         }
 
-        //Reset mostRecentPlayerToLeave for the next time
-        mostRecentPlayerToLeave = null;
+        //Reset indexOfMostRecentPlayerToLeave for the next time
+        indexOfMostRecentPlayerToLeave = -1;
 
         Debug.Log("Handled leaving player!");
     }
