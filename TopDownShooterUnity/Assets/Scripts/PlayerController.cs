@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     public int playerIndex;
 
+
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
