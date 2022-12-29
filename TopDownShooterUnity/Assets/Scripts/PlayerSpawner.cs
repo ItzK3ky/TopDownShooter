@@ -104,10 +104,13 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         //Wait for mostRecentPlayer to be set
         while (true)
         {
+            Debug.Log("Wait for mostRecentPlayerToLeave to be set");
             yield return new WaitForSecondsRealtime(0.2f);
             if (mostRecentPlayerToLeave != null)
                 break;
         }
+
+        Debug.Log("mostRecentPlayerToLeave is set: " + mostRecentPlayerToLeave);
 
         //Removing GameObject from list of Objects to be removed
         photonPlayerSyncer.removePlayerObjectToSync(mostRecentPlayerToLeave.GetComponent<PlayerController>().playerIndex);
