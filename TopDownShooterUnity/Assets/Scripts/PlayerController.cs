@@ -39,30 +39,17 @@ public class PlayerController : MonoBehaviour
             rb.velocity = movementVelocity;
         }
     }
-<<<<<<< Updated upstream
 
-    private void OnDestroy()
-    {
-<<<<<<< Updated upstream
-        //This is done, so the PlayerSpawner can manage playerIndexes when players leave
-        PlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("Player Spawner").GetComponent<PlayerSpawner>();
-        playerSpawner.mostRecentPlayerToLeave = gameObject;
-=======
-        health = health - damage;
-=======
-    
-    private void OnDestroy()
+    void OnDestroy()
     {
         //This is done, so the PlayerSpawner can manage playerIndexes when players leave
         PlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("Player Spawner").GetComponent<PlayerSpawner>();
         Debug.Log("Destroyed gameobject, here dibng: " + playerSpawner);
         playerSpawner.mostRecentPlayerToLeave = gameObject;
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     }
 
-	//Find Joystick GameObject in Scene
-	private void getJoystickObject()
+    //Find Joystick GameObject in Scene
+    private void getJoystickObject()
     {
         joystick = Joystick.FindObjectOfType<Joystick>();
     }
