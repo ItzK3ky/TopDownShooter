@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,7 +16,6 @@ public class PlayerController : MonoBehaviour
     private PhotonView photonView;
 
     public int playerIndex;
-    private float health;
 
     private void Start()
     {
@@ -34,26 +32,23 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 movementVelocity;
             if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
-            {
                 movementVelocity = joystick.Direction * playerSpeed * Time.deltaTime;
-
-            }
             else
-            {
                 movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * playerSpeed * Time.deltaTime, Input.GetAxisRaw("Vertical") * playerSpeed * Time.deltaTime);
-            }
 
             rb.velocity = movementVelocity;
         }
     }
 
-    public void addDamge(float damage)
+    private void OnDestroy()
     {
-        health = health - damage;
+        //This is done, so the PlayerSpawner can manage playerIndexes when players leave
+        PlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("Player Spawner").GetComponent<PlayerSpawner>();
+        playerSpawner.indexOfMostRecentPlayerToLeave = playerIndex;
     }
 
-	//Find Joystick GameObject in Scene
-	private void getJoystickObject()
+    //Find Joystick GameObject in Scene
+    private void getJoystickObject()
     {
         joystick = Joystick.FindObjectOfType<Joystick>();
     }
