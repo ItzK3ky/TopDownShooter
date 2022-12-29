@@ -431,6 +431,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   photonView: {fileID: 575171058}
+  playerObjectsToSync: []
+  playerObjectRigidbodyVelocity: []
 --- !u!114 &575171058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2103,30 +2105,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2062133781}
   - component: {fileID: 2062133782}
-  - component: {fileID: 2062133780}
+  - component: {fileID: 2062133783}
   m_Layer: 0
   m_Name: Spawn Players Object
-  m_TagString: Untagged
+  m_TagString: Player Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2062133780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062133779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c2770c0a367178448021a717804f6b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 7873493254263824740, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
-  virtualCamera: {fileID: 1314640055}
-  photonView: {fileID: 2062133782}
-  PhotonPlayerSyncer: {fileID: 575171057}
 --- !u!4 &2062133781
 Transform:
   m_ObjectHideFlags: 0
@@ -2164,3 +2150,17 @@ MonoBehaviour:
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &2062133783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062133779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f3a5bfccc3f4f544a07fa44687498f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 7873493254263824740, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
+  mostRecentPlayerToLeave: {fileID: 0}

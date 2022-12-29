@@ -53,7 +53,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void addPlayerToBeSynchronised()
     {
-        PhotonPlayerSyncer.addGameObjectToSync(spawnedPlayer);
+        PhotonPlayerSyncer.addPlayerObjectToSync(spawnedPlayer, spawnedPlayer.GetComponent<PlayerController>().playerIndex);
     }
 
     [PunRPC]
