@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     public int playerIndex;
 
-
+        
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
                 movementVelocity = joystick.Direction * playerSpeed * Time.deltaTime;
             else
-                movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * playerSpeed * Time.deltaTime, Input.GetAxisRaw("Vertical") * playerSpeed * Time.deltaTime);
+                movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * playerSpeed * Time.fixedDeltaTime, Input.GetAxisRaw("Vertical") * playerSpeed * Time.deltaTime);
 
             rb.velocity = movementVelocity;
         }
@@ -44,8 +44,7 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         //This is done, so the PlayerSpawner can manage playerIndexes when players leave
-        PlayerSpawner playerSpawner = GameObject.FindGameObjectWithTag("Player Spawner").GetComponent<PlayerSpawner>();
-        playerSpawner.indexOfMostRecentPlayerToLeave = playerIndex;
+        PhotonPlayerManager.Instance.indexOfMostRecentPlayerToLeave = playerIndex;
     }
 
     //Find Joystick GameObject in Scene

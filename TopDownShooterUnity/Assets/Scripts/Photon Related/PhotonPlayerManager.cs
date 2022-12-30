@@ -1,33 +1,60 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEditor;
 
-public class PlayerSpawner : MonoBehaviourPunCallbacks
+/// <summary>
+/// This Script is only ever meant to be sitting on the Player Manager Object
+/// </summary>
+public class PhotonPlayerManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private GameObject playerPrefab;
+    public static PhotonPlayerManager Instance { get; private set; }
 
-    private CinemachineVirtualCamera virtualCamera;
-    private PhotonPlayerSyncer photonPlayerSyncer;
+	#region Script Description for inspector
+
+	[Space]
+    [Header("   SCRIPT DESCRIPTION:   ")]
+    [Header("This script takes care of spawning the \n" +
+            "player in (on the \"Photon network\") and\n" +
+            "and also takes care of other players \n" +
+            "joining.")]
+    [Space(20)]
+
+    public bool iDoNothingLol;
+
+    [Space(20)]
+
+	#endregion
+
+	[Header("   SERIALIZEFIELDS:")]
+    [Space(10)]
+
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     private PhotonView photonView; //(Of this GameObject)
 
-    private GameObject spawnedPlayer; //Player, that this script spawns (also player of this client)
+    private GameObject playerOfThisClient; //Player, that this script spawns (also player of this client)
 
     private GameObject mostRecentPlayerToJoin;
-    public int indexOfMostRecentPlayerToLeave = -1; //Is by default -1, because no player is ever gonna have index -1
+    [HideInInspector] public int indexOfMostRecentPlayerToLeave = -1; //Is by default -1, because no player is ever gonna have index -1
 
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
 
     void Start()
     {
         //Get Objects From Scene
-        virtualCamera = GameObject.FindGameObjectWithTag("Virtual Camera").GetComponent<CinemachineVirtualCamera>();
-        photonPlayerSyncer = GameObject.FindGameObjectWithTag("Photon Player Syncer").GetComponent<PhotonPlayerSyncer>();
         photonView = GetComponent<PhotonView>();
-        
-        Debug.Log("I joined the room");
+
+        EditorGUILayout.HelpBox("Ball", MessageType.Info);
+
+            Debug.Log("I joined the room");
         StartCoroutine(SpawnPlayer());
     }
 
@@ -53,14 +80,16 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
         yield return new WaitForSecondsRealtime(2f);
 
-        spawnedPlayer = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
-        spawnedPlayer.GetComponent<PlayerController>().playerIndex = PhotonNetwork.PlayerList.Length - 1;
+        playerOfThisClient = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+        playerOfThisClient.GetComponent<PlayerController>().playerIndex = PhotonNetwork.PlayerList.Length - 1;
 
         //Send other clients, already in room, this clients gameobject
-        photonView.RPC("setMostRecentPlayerToJoin", RpcTarget.Others, spawnedPlayer.GetPhotonView().ViewID);
-        
+        photonView.RPC("setMostRecentPlayerToJoin", RpcTarget.Others, playerOfThisClient.GetPhotonView().ViewID);
+
+        //Add "myself" to be synced
+        PhotonPlayerSyncer.Instance.AddPlayerObjectToSync(playerOfThisClient, playerOfThisClient.GetComponent<PlayerController>().playerIndex);
+
         setupVirtualCameraToFollowPlayer();
-        addPlayerToBeSynced();
     }
 
     /// <summary>
@@ -83,7 +112,7 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         PlayerController playerControllerOfMostRecentPlayerToJoin = mostRecentPlayerToJoin.GetComponent<PlayerController>();
         playerControllerOfMostRecentPlayerToJoin.playerIndex = PhotonNetwork.PlayerList.Length - 1;
 
-        photonPlayerSyncer.addPlayerObjectToSync(mostRecentPlayerToJoin, mostRecentPlayerToJoin.GetComponent<PlayerController>().playerIndex);
+        PhotonPlayerSyncer.Instance.AddPlayerObjectToSync(mostRecentPlayerToJoin, mostRecentPlayerToJoin.GetComponent<PlayerController>().playerIndex);
 
         //Set collider of other players to isTrigger
         mostRecentPlayerToJoin.GetComponent<Collider2D>().isTrigger = true;
@@ -111,10 +140,10 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
         }
 
         //Removing GameObject from list of Objects to be synced
-        photonPlayerSyncer.removePlayerObjectToSync(indexOfMostRecentPlayerToLeave);
+        PhotonPlayerSyncer.Instance.RemovePlayerObjectToSync(indexOfMostRecentPlayerToLeave);
 
         //Going through each GameObject and downshifting each index if necessary
-        foreach (GameObject playerObject in photonPlayerSyncer.playerObjectsToSync)
+        foreach (GameObject playerObject in PhotonPlayerSyncer.Instance.playerObjectsToSync)
         {
             PlayerController playerControllerOfPlayerObjectInList = playerObject.GetComponent<PlayerController>();
 
@@ -133,17 +162,6 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Sets the "mostRecentPlayerToJoin" variable to the player, that last joined the room.
-    /// Takes in "photonID" to work around not being able to send GameObjects through RPCs
-    /// </summary>
-    [PunRPC]
-    private void setMostRecentPlayerToJoin(int photonID)
-    {
-        GameObject playerObject = PhotonNetwork.GetPhotonView(photonID).gameObject;
-        mostRecentPlayerToJoin = playerObject;
-    }
-    
-    /// <summary>
     /// Adds all players, that are already in the room to the list
     /// of GameObjects to be synced, and puts their colliders on isTrigger
     /// </summary>
@@ -160,20 +178,24 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
             if (gameObject.GetPhotonView().IsMine)
                 continue;
 
-            photonPlayerSyncer.addPlayerObjectToSync(gameObjectInArray, gameObjectInArray.GetComponent<PlayerController>().playerIndex);
+            PhotonPlayerSyncer.Instance.AddPlayerObjectToSync(gameObjectInArray, gameObjectInArray.GetComponent<PlayerController>().playerIndex);
             gameObjectInArray.GetComponent<Collider2D>().isTrigger = true;
         }
 	}
 
-
-
+    /// <summary>
+    /// Sets the "mostRecentPlayerToJoin" variable to the player, that last joined the room.
+    /// Takes in "photonID" to work around not being able to send GameObjects through RPCs
+    /// </summary>
+    [PunRPC]
+    private void setMostRecentPlayerToJoin(int photonID)
+    {
+        GameObject playerObject = PhotonNetwork.GetPhotonView(photonID).gameObject;
+        mostRecentPlayerToJoin = playerObject;
+    }
+    
 	private void setupVirtualCameraToFollowPlayer()
     {
-        virtualCamera.Follow = spawnedPlayer.transform;
-    }
-
-    private void addPlayerToBeSynced()
-    {
-        photonPlayerSyncer.addPlayerObjectToSync(spawnedPlayer, spawnedPlayer.GetComponent<PlayerController>().playerIndex);
+        virtualCamera.Follow = playerOfThisClient.transform;
     }
 }

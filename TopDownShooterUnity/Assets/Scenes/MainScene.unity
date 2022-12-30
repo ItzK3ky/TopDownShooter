@@ -397,7 +397,7 @@ GameObject:
   - component: {fileID: 575171058}
   - component: {fileID: 575171057}
   m_Layer: 0
-  m_Name: Photon Player Syncer
+  m_Name: (Photon) Player Syncer
   m_TagString: Photon Player Syncer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2107,7 +2107,7 @@ GameObject:
   - component: {fileID: 2062133782}
   - component: {fileID: 2062133783}
   m_Layer: 0
-  m_Name: Spawn Players Object
+  m_Name: (Photon) Player Manager
   m_TagString: Player Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2162,5 +2162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3a5bfccc3f4f544a07fa44687498f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 7873493254263824740, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
-  mostRecentPlayerToLeave: {fileID: 0}
+  playerPrefab: {fileID: 6239192886216966497, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
+  virtualCamera: {fileID: 1314640055}
+  indexOfMostRecentPlayerToLeave: -1

@@ -3,17 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-
 public class PhotonPlayerSyncer : MonoBehaviour
 {
-    [SerializeField] private PhotonView photonView;
+    public static PhotonPlayerSyncer Instance { get; private set; }
 
-    public List<GameObject> playerObjectsToSync = new List<GameObject>();
-    public List<Vector2> playerObjectRigidbodyVelocity = new List<Vector2>();
+    #region Script Description for inspector
+
+    [Space]
+    [Header("   SCRIPT DESCRIPTION:   ")]
+    [Header("This script adjustes the teleporting \n" +
+            "treshold for the players, to make \n" +
+            "movement synchronize on all clients as \n" +
+            "smoothly as possible.")]
+    [Space(20)]
+
+    public bool iDoNothingLol;
+
+    [Space(20)]
+
+    #endregion
+    
+    private PhotonView photonView; //(Of this client)
+
+    [HideInInspector] public List<GameObject> playerObjectsToSync = new List<GameObject>();
+    [HideInInspector] public List<Vector2> playerObjectRigidbodyVelocity = new List<Vector2>();
+    
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
 
     private void Start()
     {
-        //Go through each gameObject and put Collider on isTrigger if it doesnt belong to this client
+        //Find Objects in scene
+        photonView = GetComponent<PhotonView>();
+
+        #region Put each Collider on isTrigger if it doesnt belong to this client
         foreach (GameObject gameObjectInList in playerObjectsToSync)
         {
             if (!gameObjectInList.GetComponent<PhotonView>().IsMine)
@@ -21,11 +47,12 @@ public class PhotonPlayerSyncer : MonoBehaviour
                 gameObjectInList.GetComponent<Collider2D>().isTrigger = true;
             }
         }
-    }
+		#endregion
+	}
 
-    private void FixedUpdate()
+	private void Update()
     {
-        #region Send Rigidbody velocity of this client to all other clients
+        #region Send my Rigidbody velocity to all other clients
 
 		GameObject playerOfThisClient;
         Rigidbody2D rigidbodyOfPlayerOfThisClient;
@@ -34,11 +61,11 @@ public class PhotonPlayerSyncer : MonoBehaviour
         //Try statement because could all go wrong because there is no player yet since it waits 2 sec to spawn (SpawnPlayers script)
         try
         {
-            playerOfThisClient = findPlayerObjectOfThisClient();
+            playerOfThisClient = FindPlayerObjectOfThisClient();
             rigidbodyOfPlayerOfThisClient = playerOfThisClient.GetComponent<Rigidbody2D>();
             playerControllerOfPlayerOfThisClient = playerOfThisClient.GetComponent<PlayerController>();
         
-            photonView.RPC("setRigidBodyVelocityOnPlayerIndex", RpcTarget.All, rigidbodyOfPlayerOfThisClient.velocity, playerControllerOfPlayerOfThisClient.playerIndex);
+            photonView.RPC("SetRigidBodyVelocityOnPlayerIndex", RpcTarget.All, rigidbodyOfPlayerOfThisClient.velocity, playerControllerOfPlayerOfThisClient.playerIndex);
         
             foreach (GameObject gameObjectInList in playerObjectsToSync)
             {
@@ -69,11 +96,15 @@ public class PhotonPlayerSyncer : MonoBehaviour
             if(photonTransformViewClassicOfGameObject.m_PositionModel.TeleportIfDistanceGreaterThan == 3f)
                 yield return new WaitForSeconds(0.3f);
 
-            photonTransformViewClassicOfGameObject.m_PositionModel.TeleportIfDistanceGreaterThan = 0.3f;
+            photonTransformViewClassicOfGameObject.m_PositionModel.TeleportIfDistanceGreaterThan = 0.1f;
         }
     }
 
-    private GameObject findPlayerObjectOfThisClient()
+    /// <summary>
+    /// This method goes through all Player GameObjects 
+    /// and returns the one, that belongs to this client
+    /// </summary>
+    private GameObject FindPlayerObjectOfThisClient()
     {
         foreach (GameObject gameObjectInList in playerObjectsToSync)
         {
@@ -88,18 +119,18 @@ public class PhotonPlayerSyncer : MonoBehaviour
     }
 
     [PunRPC]
-    private void setRigidBodyVelocityOnPlayerIndex(Vector2 rigidbodyVelocity, int playerIndexOfRigidbodyVelocity)
+    private void SetRigidBodyVelocityOnPlayerIndex(Vector2 rigidbodyVelocity, int playerIndexOfRigidbodyVelocity)
     {
         playerObjectRigidbodyVelocity[playerIndexOfRigidbodyVelocity] = rigidbodyVelocity;
     }
 
-    public void addPlayerObjectToSync(GameObject playerObjectToAdd, int playerIndex)
+    public void AddPlayerObjectToSync(GameObject playerObjectToAdd, int playerIndex)
     {
         playerObjectsToSync.Insert(playerIndex, playerObjectToAdd);
         playerObjectRigidbodyVelocity.Add(playerObjectToAdd.GetComponent<Rigidbody2D>().velocity);
     }
 
-    public void removePlayerObjectToSync(int playerIndex)
+    public void RemovePlayerObjectToSync(int playerIndex)
     {
         playerObjectsToSync.RemoveAt(playerIndex);
         playerObjectRigidbodyVelocity.RemoveAt(playerIndex);
