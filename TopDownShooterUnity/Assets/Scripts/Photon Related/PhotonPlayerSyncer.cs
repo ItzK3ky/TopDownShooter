@@ -17,7 +17,7 @@ public class PhotonPlayerSyncer : MonoBehaviour
             "smoothly as possible.")]
     [Space(20)]
 
-    public bool iDoNothingLol;
+    [SerializeField] private bool iDoNothingLol;
 
     [Space(20)]
 
@@ -25,8 +25,8 @@ public class PhotonPlayerSyncer : MonoBehaviour
     
     private PhotonView photonView; //(Of this client)
 
-    [HideInInspector] public List<GameObject> playerObjectsToSync = new List<GameObject>();
-    [HideInInspector] public List<Vector2> playerObjectRigidbodyVelocity = new List<Vector2>();
+    public List<GameObject> playerObjectsToSync = new List<GameObject>();
+    public List<Vector2> playerObjectRigidbodyVelocity = new List<Vector2>();
     
     private void Awake()
     {
@@ -36,40 +36,28 @@ public class PhotonPlayerSyncer : MonoBehaviour
 
     private void Start()
     {
+        PhotonNetwork.SendRate = 60;
+
         //Find Objects in scene
         photonView = GetComponent<PhotonView>();
-
-        #region Put each Collider on isTrigger if it doesnt belong to this client
-        foreach (GameObject gameObjectInList in playerObjectsToSync)
-        {
-            if (!gameObjectInList.GetComponent<PhotonView>().IsMine)
-            {
-                gameObjectInList.GetComponent<Collider2D>().isTrigger = true;
-            }
-        }
-		#endregion
 	}
 
-	private void Update()
-    {
+	private void FixedUpdate()
+    {        
         #region Send my Rigidbody velocity to all other clients
-
-		GameObject playerOfThisClient;
-        Rigidbody2D rigidbodyOfPlayerOfThisClient;
-        PlayerController playerControllerOfPlayerOfThisClient;
 
         //Try statement because could all go wrong because there is no player yet since it waits 2 sec to spawn (SpawnPlayers script)
         try
         {
-            playerOfThisClient = FindPlayerObjectOfThisClient();
-            rigidbodyOfPlayerOfThisClient = playerOfThisClient.GetComponent<Rigidbody2D>();
-            playerControllerOfPlayerOfThisClient = playerOfThisClient.GetComponent<PlayerController>();
+            GameObject playerOfThisClient = PhotonPlayerSpawner.Instance.playerObjectOfThisClient;
+            Rigidbody2D rigidbodyOfPlayerOfThisClient = playerOfThisClient.GetComponent<Rigidbody2D>();
+            PlayerController playerControllerOfPlayerOfThisClient = playerOfThisClient.GetComponent<PlayerController>();
         
             photonView.RPC("SetRigidBodyVelocityOnPlayerIndex", RpcTarget.All, rigidbodyOfPlayerOfThisClient.velocity, playerControllerOfPlayerOfThisClient.playerIndex);
         
             foreach (GameObject gameObjectInList in playerObjectsToSync)
             {
-                StartCoroutine(increaseTeleportTresholdIfnecessary(gameObjectInList));
+                StartCoroutine(UpdateTeleportingThreshold(gameObjectInList));
             }
         }
         catch
@@ -79,13 +67,13 @@ public class PhotonPlayerSyncer : MonoBehaviour
 		#endregion
 	}
 
-	private IEnumerator increaseTeleportTresholdIfnecessary(GameObject gameObjectToIncreaseTreshold)
+	private IEnumerator UpdateTeleportingThreshold(GameObject gameObjectToUpdateTreshold)
     {
-        PhotonTransformViewClassic photonTransformViewClassicOfGameObject = gameObjectToIncreaseTreshold.GetComponent<PhotonTransformViewClassic>();
-        PlayerController gameObjectPlayerController = gameObjectToIncreaseTreshold.GetComponent<PlayerController>();
+        PhotonTransformViewClassic photonTransformViewClassicOfGameObject = gameObjectToUpdateTreshold.GetComponent<PhotonTransformViewClassic>();
 
+        PlayerController gameObjectPlayerController = gameObjectToUpdateTreshold.GetComponent<PlayerController>();
         Vector2 speedVector = playerObjectRigidbodyVelocity[gameObjectPlayerController.playerIndex];
-        
+
         if (speedVector != Vector2.zero) //If moving
         {
             photonTransformViewClassicOfGameObject.m_PositionModel.TeleportIfDistanceGreaterThan = 3f;
@@ -98,24 +86,6 @@ public class PhotonPlayerSyncer : MonoBehaviour
 
             photonTransformViewClassicOfGameObject.m_PositionModel.TeleportIfDistanceGreaterThan = 0.1f;
         }
-    }
-
-    /// <summary>
-    /// This method goes through all Player GameObjects 
-    /// and returns the one, that belongs to this client
-    /// </summary>
-    private GameObject FindPlayerObjectOfThisClient()
-    {
-        foreach (GameObject gameObjectInList in playerObjectsToSync)
-        {
-            PhotonView photonViewOfGameObjectInList = gameObjectInList.GetComponent<PhotonView>();
-            if (photonViewOfGameObjectInList.IsMine)
-            {
-                return gameObjectInList;
-            }
-        }
-
-        return null;
     }
 
     [PunRPC]

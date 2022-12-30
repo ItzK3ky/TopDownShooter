@@ -430,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc6265fc18b67b4088a4e3efe4646e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonView: {fileID: 575171058}
+  iDoNothingLol: 0
   playerObjectsToSync: []
   playerObjectRigidbodyVelocity: []
 --- !u!114 &575171058
@@ -2092,6 +2092,7 @@ Transform:
   m_Children:
   - {fileID: 2062133781}
   - {fileID: 575171056}
+  - {fileID: 2132903598}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2162,6 +2163,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3a5bfccc3f4f544a07fa44687498f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 6239192886216966497, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
-  virtualCamera: {fileID: 1314640055}
+  iDoNothingLol: 0
   indexOfMostRecentPlayerToLeave: -1
+--- !u!1 &2132903597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2132903598}
+  - component: {fileID: 2132903600}
+  - component: {fileID: 2132903599}
+  m_Layer: 0
+  m_Name: (Photon) Player Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2132903598
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132903597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2055793280}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2132903599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132903597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa226e85910fb949b8056baf76a3e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iDoNothingLol: 0
+  _playerPrefab: {fileID: 6239192886216966497, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
+--- !u!114 &2132903600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132903597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
