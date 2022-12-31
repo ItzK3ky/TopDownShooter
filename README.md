@@ -1,4 +1,4 @@
 # TopDownShooter
 My first semi-serious indie game. 
 
-Latest Youtube devlog: https://youtu.be/F1513Tbqxl4
+Latest Youtube devlog: https://youtu.be/drqF-lvFK_I
