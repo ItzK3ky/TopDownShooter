@@ -47,6 +47,8 @@ MonoBehaviour:
   - setMostRecentPlayerToJoin
   - setMostRecentPlayerToLeave
   - SetRigidBodyVelocityOnPlayerIndex
+  - setSynchronizePosition
+  - SetSyncPosition
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

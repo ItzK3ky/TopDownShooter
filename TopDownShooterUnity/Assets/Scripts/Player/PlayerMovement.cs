@@ -19,16 +19,18 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float _playerSpeed;
 
+    public Vector2 rigibodyVelocity;
+
     private PhotonView _view;
 
     private Rigidbody2D _rb;
-    private Joystick joystick;
+    private Joystick _joystick;
 
     void Start()
     {
         _view = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody2D>();
-        joystick = FindObjectOfType<Joystick>();
+        _joystick = FindObjectOfType<Joystick>();
     }
 
     void FixedUpdate()
@@ -38,11 +40,19 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector2 movementVelocity;
             if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
-                movementVelocity = joystick.Direction * _playerSpeed * Time.deltaTime;
+                movementVelocity = _joystick.Direction * _playerSpeed * Time.deltaTime;
             else
-                movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * _playerSpeed * Time.fixedDeltaTime, Input.GetAxisRaw("Vertical") * _playerSpeed * Time.deltaTime);
+                movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * _playerSpeed * Time.fixedDeltaTime, Input.GetAxisRaw("Vertical") * _playerSpeed * Time.deltaTime); 
 
             _rb.velocity = movementVelocity;
+        }
+        else
+        {
+            if(_rb.velocity != Vector2.zero)
+            {
+                rigibodyVelocity = _rb.velocity;
+                _rb.velocity = Vector2.zero;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -89,11 +90,7 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
             PlayerController playerControllerOfPlayerObjectInList = playerObject.GetComponent<PlayerController>();
 
             if (playerControllerOfPlayerObjectInList.playerIndex > indexOfMostRecentPlayerToLeave)
-            {
                 playerControllerOfPlayerObjectInList.playerIndex--;
-
-                Debug.Log(playerObject + " now has the ID " + playerControllerOfPlayerObjectInList.playerIndex);
-            }
         }
 
         //Reset indexOfMostRecentPlayerToLeave for the next time

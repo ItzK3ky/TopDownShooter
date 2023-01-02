@@ -2212,6 +2212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iDoNothingLol: 0
   _playerPrefab: {fileID: 6239192886216966497, guid: a9cb7a4caf7f08f4bb6d8768e6604910, type: 3}
+  playerObjectOfThisClient: {fileID: 0}
 --- !u!114 &2132903600
 MonoBehaviour:
   m_ObjectHideFlags: 0
