@@ -60,7 +60,6 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
         playerControllerOfMostRecentPlayerToJoin.playerIndex = PhotonNetwork.PlayerList.Length - 1;
 
         PhotonPlayerSyncer.Instance.AddPlayerObjectToSync(mostRecentPlayerToJoin, mostRecentPlayerToJoin.GetComponent<PlayerController>().playerIndex);
-        mostRecentPlayerToJoin.GetComponent<Collider2D>().isTrigger = true;
 
         //Reset mostRecentPlayerToJoin for the next time
         mostRecentPlayerToJoin = null;

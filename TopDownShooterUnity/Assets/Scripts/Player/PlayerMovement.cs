@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        Debug.Log(_rb.angularVelocity);
+
         //Player Movement
         if (_view.IsMine)
         {
@@ -42,13 +44,13 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
                 movementVelocity = _joystick.Direction * _playerSpeed * Time.deltaTime;
             else
-                movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * _playerSpeed * Time.fixedDeltaTime, Input.GetAxisRaw("Vertical") * _playerSpeed * Time.deltaTime); 
+                movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * _playerSpeed * Time.fixedDeltaTime, Input.GetAxisRaw("Vertical") * _playerSpeed * Time.deltaTime);
 
             _rb.velocity = movementVelocity;
         }
         else
         {
-            if(_rb.velocity != Vector2.zero)
+            if (_rb.velocity != Vector2.zero)
             {
                 rigibodyVelocity = _rb.velocity;
                 _rb.velocity = Vector2.zero;

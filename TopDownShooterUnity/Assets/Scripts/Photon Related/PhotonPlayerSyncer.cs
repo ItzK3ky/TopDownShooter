@@ -41,18 +41,18 @@ public class PhotonPlayerSyncer : MonoBehaviour
 
 	private void UpdateTeleportingThreshold(GameObject gameObjectToUpdateTreshold)
     {
-        PhotonTransformViewClassic photonTransformViewClassicOfGameObject = gameObjectToUpdateTreshold.GetComponent<PhotonTransformViewClassic>();
-
+        PhotonRigidbody2DView rigidbodyView = gameObjectToUpdateTreshold.GetComponent<PhotonRigidbody2DView>();
         PlayerController gameObjectPlayerController = gameObjectToUpdateTreshold.GetComponent<PlayerController>();
+
         Vector2 speedVector = gameObjectToUpdateTreshold.GetComponent<Rigidbody2D>().velocity;
 
         if (speedVector != Vector2.zero) //If moving
         {
-            photonTransformViewClassicOfGameObject.m_PositionModel.TeleportIfDistanceGreaterThan = 3f;
+            rigidbodyView.m_TeleportIfDistanceGreaterThan = 4f;
         }
         else //If not moving
         {
-            photonTransformViewClassicOfGameObject.m_PositionModel.TeleportIfDistanceGreaterThan = 0.01f;
+            rigidbodyView.m_TeleportIfDistanceGreaterThan = 0.01f;
         }
     }
 
