@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 /// <summary>
 /// This Script is only ever meant to be sitting on the Player Manager Object
@@ -59,7 +60,7 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
         PlayerController playerControllerOfMostRecentPlayerToJoin = mostRecentPlayerToJoin.GetComponent<PlayerController>();
         playerControllerOfMostRecentPlayerToJoin.playerIndex = PhotonNetwork.PlayerList.Length - 1;
 
-        PhotonPlayerSyncer.Instance.AddPlayerObjectToSync(mostRecentPlayerToJoin, mostRecentPlayerToJoin.GetComponent<PlayerController>().playerIndex);
+        mostRecentPlayerToJoin.GetComponentInChildren<TMP_Text>().text = mostRecentPlayerToJoin.GetPhotonView().Owner.NickName;
 
         //Reset mostRecentPlayerToJoin for the next time
         mostRecentPlayerToJoin = null;
@@ -80,11 +81,9 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
         }
         //[mostRecentPlayerToLeave is set]
 
-        //Removing leaving GameObject from list of Objects to be synced
-        PhotonPlayerSyncer.Instance.RemovePlayerObjectToSync(indexOfMostRecentPlayerToLeave);
-
-        //Going through each GameObject and downshifting each index if necessary
-        foreach (GameObject playerObject in PhotonPlayerSyncer.Instance.playerObjectsToSync)
+        //Going through each GameObject and downshifting each index if 
+        GameObject[] playerGameObjectsInScene = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject playerObject in playerGameObjectsInScene)
         {
             PlayerController playerControllerOfPlayerObjectInList = playerObject.GetComponent<PlayerController>();
 
@@ -111,11 +110,11 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
         foreach (GameObject gameObjectInArray in arrayOfPlayerGameObjectsInScene)
         {
             //"Only handle other players, not this client"
-            if (gameObject.GetPhotonView().IsMine)
+            if (gameObjectInArray.GetPhotonView().IsMine)
                 continue;
 
-            PhotonPlayerSyncer.Instance.AddPlayerObjectToSync(gameObjectInArray, gameObjectInArray.GetComponent<PlayerController>().playerIndex);
-            gameObjectInArray.GetComponent<Collider2D>().isTrigger = true;
+
+            gameObjectInArray.GetComponentInChildren<TMP_Text>().text = gameObjectInArray.GetPhotonView().Owner.NickName;
         }
 	}
 

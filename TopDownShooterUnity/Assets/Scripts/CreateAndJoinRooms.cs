@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private InputField nameInput;
     [SerializeField] private InputField createInput;
     [SerializeField] private InputField joinInput;
 
@@ -21,6 +22,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        PhotonNetwork.NickName = nameInput.text;
         PhotonNetwork.LoadLevel("MainScene");
     }
 }

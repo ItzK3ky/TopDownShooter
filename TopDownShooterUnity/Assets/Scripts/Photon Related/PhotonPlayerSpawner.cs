@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class PhotonPlayerSpawner : MonoBehaviour
 {
@@ -36,17 +37,21 @@ public class PhotonPlayerSpawner : MonoBehaviour
     /// Spawns player on on Photon Room (so it's visible for all players)
     /// and  assigns an playerIndex to the player
     /// </summary>
+    [ContextMenu("Spawn")]
+    public void ding()
+    {
+        StartCoroutine(SpawnPlayer());
+    }
+
     private IEnumerator SpawnPlayer()
     {
         yield return new WaitForSecondsRealtime(2f);
 
         playerObjectOfThisClient = PhotonNetwork.Instantiate(_playerPrefab.name, Vector3.zero, Quaternion.identity);
-        int thisClientsPlayerIndex = playerObjectOfThisClient.GetComponent<PlayerController>().playerIndex = PhotonNetwork.PlayerList.Length - 1;
 
         //Send this clients player object to all other clients
         PhotonPlayerManager.Instance.photonView.RPC("setMostRecentPlayerToJoin", RpcTarget.Others, playerObjectOfThisClient.GetPhotonView().ViewID);
 
-        //Add "myself" to objects to be synced
-        PhotonPlayerSyncer.Instance.AddPlayerObjectToSync(playerObjectOfThisClient, thisClientsPlayerIndex);
+        playerObjectOfThisClient.GetComponentInChildren<TMP_Text>().text = playerObjectOfThisClient.GetPhotonView().Owner.NickName;
     }
 }

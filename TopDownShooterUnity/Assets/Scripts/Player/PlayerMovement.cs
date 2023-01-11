@@ -19,42 +19,35 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float _playerSpeed;
 
-    public Vector2 rigibodyVelocity;
-
     private PhotonView _view;
-
     private Rigidbody2D _rb;
+
     private Joystick _joystick;
+
+    private Vector2 movementVector;
 
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         _view = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody2D>();
         _joystick = FindObjectOfType<Joystick>();
     }
 
+    private void Update()
+    {
+        //Player Input
+        if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
+            movementVector = _joystick.Direction * _playerSpeed * Time.fixedDeltaTime;
+        else
+            movementVector = new Vector2(Input.GetAxisRaw("Horizontal") * _playerSpeed * Time.fixedDeltaTime, Input.GetAxisRaw("Vertical") * _playerSpeed * Time.fixedDeltaTime);
+
+    }
+
     void FixedUpdate()
     {
-        Debug.Log(_rb.angularVelocity);
-
-        //Player Movement
         if (_view.IsMine)
-        {
-            Vector2 movementVelocity;
-            if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
-                movementVelocity = _joystick.Direction * _playerSpeed * Time.deltaTime;
-            else
-                movementVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * _playerSpeed * Time.fixedDeltaTime, Input.GetAxisRaw("Vertical") * _playerSpeed * Time.deltaTime);
-
-            _rb.velocity = movementVelocity;
-        }
-        else
-        {
-            if (_rb.velocity != Vector2.zero)
-            {
-                rigibodyVelocity = _rb.velocity;
-                _rb.velocity = Vector2.zero;
-            }
-        }
+            _rb.velocity = movementVector;
     }
 }

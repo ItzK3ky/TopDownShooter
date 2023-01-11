@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private CinemachineVirtualCamera _virtualCamera;
 
     private PhotonView _view;
+    private SpriteRenderer _spriteRenderer;
 
     [HideInInspector] public int playerIndex;
 
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         //Get Objects from scene
         _view = GetComponent<PhotonView>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _virtualCamera = GameObject.FindGameObjectWithTag("Virtual Camera").GetComponent<CinemachineVirtualCamera>();
 
         if (_view.IsMine)
@@ -37,8 +39,6 @@ public class PlayerController : MonoBehaviour
     //This is done, so the PlayerSpawner can manage playerIndexes when players leave
     private void OnDestroy() => PhotonPlayerManager.Instance.indexOfMostRecentPlayerToLeave = playerIndex;
 
-    private void setUpVirtualCameraToFollowPlayer()
-    {
-        _virtualCamera.Follow = transform;
-    }
+    private void setUpVirtualCameraToFollowPlayer() => _virtualCamera.Follow = transform;
+    
 }
