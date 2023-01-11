@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 8677685543221649278}
   - component: {fileID: 4852283636053199477}
   - component: {fileID: 421573770308424066}
-  m_Layer: 0
+  - component: {fileID: -3673070965856436750}
+  - component: {fileID: 6053223479968501080}
+  m_Layer: 3
   m_Name: Hand Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,10 +100,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2eb74538a6b064998029ec0449e1a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootingCooldown: 0.3
-  bulletSpeed: 15
+  shootingCooldownInSeconds: 0.7
+  bulletSpeed: 20
   gunBarrelEnd: {fileID: 7613655015514946438}
   bulletPrefab: {fileID: 4783618105734176945, guid: c5b6207c7f834824a9efe76f8bb8a84b, type: 3}
+--- !u!114 &-3673070965856436750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996644973173664020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!68 &6053223479968501080
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996644973173664020}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.20102628, y: -0.028561007}
+  - {x: -0.19933335, y: 0.019306941}
+  - {x: -0.23849976, y: 0.021233907}
+  - {x: -0.23984462, y: 0.039804175}
+  - {x: -0.2487981, y: 0.04384017}
+  - {x: -0.24991877, y: 0.090879075}
+  - {x: -0.20120998, y: 0.092439614}
+  - {x: -0.19938706, y: 0.10757325}
+  - {x: -0.18048319, y: 0.1103379}
+  - {x: -0.17796342, y: 0.09194318}
+  - {x: -0.14001542, y: 0.092096426}
+  - {x: -0.13947529, y: 0.12882769}
+  - {x: -0.09879706, y: 0.12999153}
+  - {x: -0.10011956, y: 0.09126668}
+  - {x: -0.021489438, y: 0.09232681}
+  - {x: -0.022727806, y: 0.13000117}
+  - {x: 0.01800707, y: 0.1297261}
+  - {x: 0.023388496, y: 0.09330802}
+  - {x: 0.21083902, y: 0.09043162}
+  - {x: 0.2092703, y: 0.07132123}
+  - {x: 0.2222151, y: 0.069557674}
+  - {x: 0.22369204, y: 0.020148791}
+  - {x: 0.21150841, y: 0.019283682}
+  - {x: 0.21097663, y: 0.0007004235}
+  - {x: 0.03987539, y: 0.000023387372}
+  - {x: 0.04154641, y: -0.028464062}
+  - {x: 0.01858173, y: -0.03116111}
+  - {x: 0.020986745, y: -0.048847105}
+  - {x: -0.07780185, y: -0.050561793}
+  - {x: -0.079498224, y: -0.0707877}
+  - {x: -0.097966075, y: -0.07211952}
+  - {x: -0.09778512, y: -0.110163674}
+  - {x: -0.11939915, y: -0.11137304}
+  - {x: -0.11857412, y: -0.12836798}
+  - {x: -0.2210938, y: -0.12771218}
+  - {x: -0.21872751, y: -0.030731596}
+  - {x: -0.2022311, y: -0.028365016}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1 &7613655015514946438
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +207,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7613655015514946438}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071066, w: 0.70710707}
-  m_LocalPosition: {x: 0.2292, y: 0.0453, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.0453, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
