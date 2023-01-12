@@ -5,6 +5,19 @@ using Photon.Pun;
 
 public class BulletScript : MonoBehaviour
 {
+    #region Script Description for inspector
+
+    [Header("   SCRIPT DESCRIPTION:   ")]
+    [Header("This script takes care of moving the bullet \n" +
+            "when shot")]
+    [Space(20)]
+
+    [SerializeField] private bool iDoNothingLol;
+
+    [Space(20)]
+
+    #endregion
+
     [Header("Bullet Attributes")]
     [SerializeField] private float despawnTimeInSeconds;
 

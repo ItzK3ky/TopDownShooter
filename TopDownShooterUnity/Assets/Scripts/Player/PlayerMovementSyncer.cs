@@ -5,6 +5,20 @@ using Photon.Pun;
 
 public class PlayerMovementSyncer : MonoBehaviour, IPunObservable
 {
+    #region Script Description for inspector
+
+    [Header("   SCRIPT DESCRIPTION:   ")]
+    [Header("This script takes care of synchronizing \n" +
+            "the players movement across all connected \n" +
+             "devices.")]
+    [Space(20)]
+
+    [SerializeField] private bool iDoNothingLol;
+
+    [Space(20)]
+
+    #endregion
+
     private PhotonView _view;
 
     private Vector3 _receivedPosition;

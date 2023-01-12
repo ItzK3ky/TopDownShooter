@@ -147,11 +147,10 @@ GameObject:
   - component: {fileID: 8223929634807288578}
   - component: {fileID: 7739491567699765387}
   - component: {fileID: 4222712399733061087}
+  - component: {fileID: 1363709881656323121}
   - component: {fileID: -3414755743956787762}
   - component: {fileID: 6084288542782550599}
-  - component: {fileID: 1363709881656323121}
   - component: {fileID: 8756427090000105238}
-  - component: {fileID: 4877879228587201541}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -265,6 +264,29 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1363709881656323121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6239192886216966497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 8756427090000105238}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &-3414755743956787762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,29 +315,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iDoNothingLol: 0
   playerIndex: 0
---- !u!114 &1363709881656323121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6239192886216966497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 0
-  ObservedComponents:
-  - {fileID: 8756427090000105238}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &8756427090000105238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,22 +327,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde80a78de1c0474aaf1b4faaa406d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4877879228587201541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6239192886216966497}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 0
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!1 &6515157174692765794
 GameObject:
   m_ObjectHideFlags: 0
