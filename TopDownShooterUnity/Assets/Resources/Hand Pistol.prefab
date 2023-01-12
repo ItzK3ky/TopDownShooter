@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8677685543221649278}
   - component: {fileID: 4852283636053199477}
-  - component: {fileID: 421573770308424066}
   - component: {fileID: -3673070965856436750}
   - component: {fileID: 6053223479968501080}
+  - component: {fileID: 421573770308424066}
   m_Layer: 3
   m_Name: Hand Pistol
   m_TagString: Untagged
@@ -88,22 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &421573770308424066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1996644973173664020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e2eb74538a6b064998029ec0449e1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shootingCooldownInSeconds: 0.7
-  bulletSpeed: 20
-  gunBarrelEnd: {fileID: 7613655015514946438}
-  bulletPrefab: {fileID: 4783618105734176945, guid: c5b6207c7f834824a9efe76f8bb8a84b, type: 3}
 --- !u!114 &-3673070965856436750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +167,23 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &421573770308424066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996644973173664020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e2eb74538a6b064998029ec0449e1a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iDoNothingLol: 0
+  shootingCooldownInSeconds: 0.7
+  bulletSpeed: 20
+  gunBarrelEnd: {fileID: 7613655015514946438}
+  bulletPrefab: {fileID: 4783618105734176945, guid: c5b6207c7f834824a9efe76f8bb8a84b, type: 3}
 --- !u!1 &7613655015514946438
 GameObject:
   m_ObjectHideFlags: 0
