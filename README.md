@@ -1,4 +1,6 @@
-# TopDownShooter
+## TopDownShooter
 My first semi-serious indie game. 
 
-Latest Youtube devlog: https://youtu.be/qWSbfxM03S8
+**Latest Release: [TopDownShooter v0.0.6-prealpha](https://github.com/ItzK3ky/TopDownShooter/releases/tag/v0.0.6-prealpha)**
+
+**Latest Youtube devlog: https://youtu.be/qWSbfxM03S8**
