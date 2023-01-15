@@ -22,7 +22,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.NickName = nameInput.text;
         PhotonNetwork.LoadLevel("MainScene");
+    }
+
+    public void OnNameInputFieldChange()
+    {
+        PhotonNetwork.LocalPlayer.NickName = nameInput.text;
     }
 }

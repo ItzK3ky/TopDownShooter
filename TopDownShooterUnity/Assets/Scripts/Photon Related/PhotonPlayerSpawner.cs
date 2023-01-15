@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PhotonPlayerSpawner : MonoBehaviour
 {
@@ -25,25 +27,20 @@ public class PhotonPlayerSpawner : MonoBehaviour
 
     [HideInInspector] public GameObject playerObjectOfThisClient;
 
-    public Color32 redColor;
-    public Color32 greenColor;
-    public Color32 cyanColor;
-    public Color32 yellowColor;
-    public Color32 grayColor;
+    private PhotonView _view;
 
     void Awake()
     {
+        _view = GetComponent<PhotonView>();
+
         if (Instance == null)
             Instance = this;
-
-        redColor = new Color32(255, 0, 0, 255);
-        greenColor = new Color32(0, 255, 0, 255);
-        cyanColor = new Color32(0, 255, 255, 255);
-        yellowColor = new Color32(255, 255, 0, 255);
-        grayColor = new Color32(150, 150, 150, 255);
     }
 
-    void Start() => StartCoroutine(SpawnPlayer());
+    void Start()
+    {
+        StartCoroutine(SpawnPlayer());
+    }
 
     /// <summary>
     /// Spawns player on on Photon Room (so it's visible for all players)
@@ -59,28 +56,11 @@ public class PhotonPlayerSpawner : MonoBehaviour
         PhotonPlayerManager.Instance.photonView.RPC("setMostRecentPlayerToJoin", RpcTarget.Others, playerObjectOfThisClient.GetPhotonView().ViewID);
 
         //Change Nickname text to Nickname
-        playerObjectOfThisClient.GetComponentInChildren<TMP_Text>().text = playerObjectOfThisClient.GetPhotonView().Owner.NickName;
+        playerObjectOfThisClient.GetComponentInChildren<TMP_Text>().text = PhotonNetwork.LocalPlayer.NickName;
 
-        //Change Player Color
-        playerObjectOfThisClient.GetComponent<SpriteRenderer>().color = GetRandomPlayerColor();
-    }
-
-    private Color32 GetRandomPlayerColor()
-    {
-        switch(Random.Range(0, 4))
-        {
-            case 0:
-                return redColor;
-            case 1:
-                return greenColor;
-            case 2:
-                return cyanColor;
-            case 3:
-                return yellowColor;
-            case 4:
-                return grayColor;
-        }
-
-        return new Color32(0, 0, 0, 0);
+        //Set "FinishedSpawning" property
+        Hashtable finishedSpawningHash = new Hashtable();
+        finishedSpawningHash.Add("FinishedSpawning", true);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(finishedSpawningHash);
     }
 }

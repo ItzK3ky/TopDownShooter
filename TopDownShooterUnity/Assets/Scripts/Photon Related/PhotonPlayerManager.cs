@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 /// <summary>
 /// This Script is only ever meant to be sitting on the Player Manager Object
@@ -36,22 +37,25 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
 
     void Start() => StartCoroutine(handlePlayersAlreadyInRoom());
 
-    public override void OnPlayerEnteredRoom(Player player) => StartCoroutine(HandleJoiningPlayer());
+    public override void OnPlayerEnteredRoom(Player player) => StartCoroutine(HandleJoiningPlayer(player));
 
     public override void OnPlayerLeftRoom(Player Player) => StartCoroutine(HandleLeavingPlayer());
 
     /// <summary>
     /// Assigns playerIndexes to (other) joining players
     /// </summary>
-    private IEnumerator HandleJoiningPlayer()
+    private IEnumerator HandleJoiningPlayer(Player player)
     {
         //Wait for RPC of joining client to send its "mostRecentPlayerToJoin" to this client
         //I do this, to get the Player GameObject, that just joined
         while (true)
         {
             yield return new WaitForSecondsRealtime(0.2f);
+            bool finishedSpawning = false;
+            try { finishedSpawning = (bool)player.CustomProperties["FinishedSpawning"]; }
+            catch { }
 
-            if (mostRecentPlayerToJoin != null)
+            if (mostRecentPlayerToJoin != null && finishedSpawning == true)
                 break;
         }
         //[mostRecentPlayerToJoin is set]
@@ -60,7 +64,16 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
         PlayerController playerControllerOfMostRecentPlayerToJoin = mostRecentPlayerToJoin.GetComponent<PlayerController>();
         playerControllerOfMostRecentPlayerToJoin.playerIndex = PhotonNetwork.PlayerList.Length - 1;
 
+        //Change Nickname text to nickname
         mostRecentPlayerToJoin.GetComponentInChildren<TMP_Text>().text = mostRecentPlayerToJoin.GetPhotonView().Owner.NickName;
+
+        //Change Player color
+        byte playerColorR = (byte)player.CustomProperties["PlayerColorR"];
+        byte playerColorG = (byte)player.CustomProperties["PlayerColorG"];
+        byte playerColorB = (byte)player.CustomProperties["PlayerColorB"];
+
+        Color32 playerColor = new Color32(playerColorR, playerColorG, playerColorB, 255);
+        mostRecentPlayerToJoin.GetComponent<SpriteRenderer>().color = playerColor;
 
         //Reset mostRecentPlayerToJoin for the next time
         mostRecentPlayerToJoin = null;
@@ -113,8 +126,16 @@ public class PhotonPlayerManager : MonoBehaviourPunCallbacks
             if (gameObjectInArray.GetPhotonView().IsMine)
                 continue;
 
-
+            //Change Nickname text to Nickname
             gameObjectInArray.GetComponentInChildren<TMP_Text>().text = gameObjectInArray.GetPhotonView().Owner.NickName;
+
+            //Change Player 
+            byte playerColorR = (byte)gameObjectInArray.GetPhotonView().Owner.CustomProperties["PlayerColorR"];
+            byte playerColorG = (byte)gameObjectInArray.GetPhotonView().Owner.CustomProperties["PlayerColorG"];
+            byte playerColorB = (byte)gameObjectInArray.GetPhotonView().Owner.CustomProperties["PlayerColorB"];
+
+            Color32 playerColor = new Color32(playerColorR, playerColorG, playerColorB, 255);
+            gameObjectInArray.GetComponent<SpriteRenderer>().color = playerColor;
         }
 	}
 
