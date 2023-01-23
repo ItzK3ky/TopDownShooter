@@ -49,9 +49,11 @@ public class PlayerColor : MonoBehaviour
         Hashtable playerColorRHash = new Hashtable();
         Hashtable playerColorGHash = new Hashtable();
         Hashtable playerColorBHash = new Hashtable();
+
         playerColorRHash.Add("PlayerColorR", playerColor.r);
         playerColorGHash.Add("PlayerColorG", playerColor.g);
         playerColorBHash.Add("PlayerColorB", playerColor.b);
+
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerColorRHash);
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerColorGHash);
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerColorBHash);
@@ -59,7 +61,7 @@ public class PlayerColor : MonoBehaviour
 
     private Color32 GetRandomPlayerColor()
     {
-        switch (Random.Range(0, 4))
+        switch (Random.Range(0, 5))
         {
             case 0:
                 return redColor;

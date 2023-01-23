@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 /// <summary>
 /// This Script is only ever meant to be sitting on the Player Manager Object

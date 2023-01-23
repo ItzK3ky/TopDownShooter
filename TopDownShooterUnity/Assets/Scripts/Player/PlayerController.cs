@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     [HideInInspector] public int playerIndex;
+     public int health = 100;
 
     private void Start()
     {
@@ -40,5 +41,5 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy() => PhotonPlayerManager.Instance.indexOfMostRecentPlayerToLeave = playerIndex;
 
     private void setUpVirtualCameraToFollowPlayer() => _virtualCamera.Follow = transform;
-    
+
 }

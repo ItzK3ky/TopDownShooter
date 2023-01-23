@@ -20,7 +20,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(joinInput.text);
     }
 
-    public override void OnJoinedRoom()
+    public override void OnJoinedRoom() 
     {
         PhotonNetwork.LoadLevel("MainScene");
     }
